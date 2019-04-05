@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+        body {
+            font-family: Verdana;
+        }
+
+        h1 {
+            text-align: center;
+            color: black;
+            font-family: cursive;
+        }
+
+        form {
+            border: 2px dashed blue;
+            padding: 20px;
+            width: 400px;
+            margin: 0px auto;
+            background-image: linear-gradient(white, gray);
+            margin-bottom: 30px; 
+        }
+
+        label {
+            width: 100px;
+            display: inline-block;
+        }
+
+        form>div {
+            margin-bottom: 20px;
+        }
+
+        form div:last-child {
+            text-align: center;
+            
+        }
+        input[type='submit']{
+            color:red;
+            font-size: 2em;
+        }
+        table{
+            width: 500px;
+            margin: 0 auto ;    
+            background-color: gray;       
+        }
+
+        table>thead{
+            background-color: white; 
+        }
+        .input-error {
+            border-left: 5px solid red;
+            border-right: 5px solid red;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div>
+        <div>
+            <form>
+                <div>
+                    <h1>Add Student Details</h1>
+                </div>
+                <div>
+                    <label for="txtName">Firas Name</label>
+                    <input type="text" id="txtName" required />
+                </div>
+                <div>
+                    <label for="lName">Last Name</label>
+                    <input type="text" id="lName" required />
+                </div>
+                <div>
+                    <label for="txtAge">Age (<span id="ageValue">70</span>)</label>
+                    <input type="range" name="age" min="18" max="120" value="70" oninput="updateAge()" />
+                    <!-- oninput="ageValue.innerText = this.value" -->
+                </div>
+                <div>
+                    <label for="radioGender">Gender</label>
+                    <input type="radio" name="gender" value="F" />Female
+                    <input type="radio" name="gender" value="M" />Male
+                </div>
+                <div>
+                    <label for="lstCourse">Course</label>
+                    <select required>
+                        <option value="">Select Course</option>
+                        <option value="1">Math</option>
+                        <option value="2">Computers</option>
+                        <option value="3">Philosophy</option>
+                        <option value="4">Buddhism</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Hobbies</label>
+                    <input type="checkbox" name="vehicle1" value="movies">Movies
+                    <input type="checkbox" name="vehicle2" value="surfing">Surfing
+                    <input type="checkbox" name="vehicle3" value="lego">Lego
+                </div>
+                <div>
+                    <input type="submit" value="save" />
+                </div>
+            </form>
+        <table>
+            <thead>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Age</th>
+                <th>Gender</th>
+                <th>Course</th>
+                <th>Hobbies</th>
+            </thead>
+        </table>
+        </div>
+    </div>
+
+    <script>
+        //DOM elements
+        let ageValue,
+            rngAge,
+            txtName,
+            txtPhone,
+            txtEmail,
+            txtDOB,
+            gender,
+            course,
+            submit,
+            showDetails,
+            form;
+
+        (() => {
+            txtName = txtName || document.querySelector("#txtName");
+            txtPhone = txtPhone || document.querySelector("#txtPhone");
+            txtEmail = txtEmail || document.querySelector("#txtEmail");
+            txtDOB = txtDOB || document.querySelector("#txtDOB");
+            gender = gender || document.querySelectorAll("[type=radio]");
+            course = course || document.querySelector("select");
+            ageValue = ageValue || document.querySelector("#ageValue");
+            rngAge = rngAge || document.querySelector("input[type=range]");
+            submit = document.querySelector("input[type=submit]");
+            showDetails = document.querySelector("button");
+            form = document.querySelector("form");
+        })();
+
+        function updateAge() {
+            ageValue.innerText = rngAge.value;
+        }
+
+        const student = {};
+
+        function formValid() {
+            txtName.className = txtName.className.replace('input-error', '');
+
+            if (txtName.value.length < 2) {
+                txtName.className += 'input-error';
+                return false;
+            }
+
+            return true;
+        }
+
+        submit.addEventListener("click", () => {
+            if (!formValid()) {
+                return;
+            }
+
+            student.name = txtName.value;
+            student.age = ageValue.innerText;
+            student.phone = txtPhone.value;
+            student.email = txtEmail.value;
+            student.dob = txtDOB.value;
+
+            for (const radio of gender) {
+                if (radio.checked) {
+                    student.gender = radio.value;
+                    break;
+                }
+            }
+
+            student.course = course.value;
+        });
+
+        showDetails.addEventListener("click", () => {
+            console.log(student);
+        });
+
+        form.addEventListener("submit", event => {
+            event.preventDefault();
+        });
+    </script>
+</body>
+
+</html>
